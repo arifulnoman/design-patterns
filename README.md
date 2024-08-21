@@ -298,3 +298,90 @@ class Robot implements Workable {
 * **Initial Example:** The `Worker` interface violates the Interface Segregation Principle because it forces the `Robot` class to implement the `eat()` method, even though robots don't need to eat. This leads to an unnecessary and potentially problematic method in the Robot class.
 
 * **Refactored Example:** The interfaces are now split into `Workable` and `Eatable`, each representing a specific responsibility. The `Programmer` class implements both interfaces because it needs both functionalities, while the `Robot` class only implements the `Workable` interface since it doesn't need to eat. This adheres to ISP by ensuring that classes are not forced to implement unnecessary methods, making the code more flexible and easier to maintain.
+
+## L - Liskov Substitution Principle
+
+**Definition:** High-level modules should not depend on low-level modules. Both should depend on abstractions. Additionally, abstractions should not depend on details. Details should depend on abstractions.
+
+The Dependency Inversion Principle encourages decoupling by ensuring that both high-level and low-level modules rely on abstractions (e.g., interfaces) rather than concrete implementations. This improves the flexibility and maintainability of the system.
+
+* **Depend on Abstractions:** Instead of depending on concrete classes, high-level and low-level modules should depend on interfaces or abstract classes.
+* **Inversion of Control:** Control over dependencies should be inverted, meaning that the creation of dependencies is handled externally, often via dependency injection.
+
+**Example:**
+
+```
+class LightBulb {
+    public void turnOn() {
+        System.out.println("LightBulb turned on");
+    }
+
+    public void turnOff() {
+        System.out.println("LightBulb turned off");
+    }
+}
+
+class Switch {
+    private LightBulb bulb;
+
+    public Switch(LightBulb bulb) {
+        this.bulb = bulb;
+    }
+
+    public void operate(boolean on) {
+        if (on) {
+            bulb.turnOn();
+        } else {
+            bulb.turnOff();
+        }
+    }
+}
+```
+**Refactored Example:**
+```
+interface Switchable {
+    void turnOn();
+    void turnOff();
+}
+
+class LightBulb implements Switchable {
+    public void turnOn() {
+        System.out.println("LightBulb turned on");
+    }
+
+    public void turnOff() {
+        System.out.println("LightBulb turned off");
+    }
+}
+
+class Fan implements Switchable {
+    public void turnOn() {
+        System.out.println("Fan turned on");
+    }
+
+    public void turnOff() {
+        System.out.println("Fan turned off");
+    }
+}
+
+class Switch {
+    private Switchable device;
+
+    public Switch(Switchable device) {
+        this.device = device;
+    }
+
+    public void operate(boolean on) {
+        if (on) {
+            device.turnOn();
+        } else {
+            device.turnOff();
+        }
+    }
+}
+```
+
+**Explanation:**  
+* **Initial Example:** In this example, the Switch class directly depends on the LightBulb class. This means that if you need to change or replace the LightBulb with a different type of bulb or device, you would have to modify the Switch class. This tight coupling violates the Dependency Inversion Principle because the high-level module (Switch) depends directly on a low-level module (LightBulb).
+
+* **Refactored Example:** The refactored code adheres to the Dependency Inversion Principle by introducing the Switchable interface, which acts as an abstraction for the devices that can be controlled. The Switch class now depends on the Switchable abstraction rather than a concrete implementation like LightBulb. This way, Switch can operate any device that implements the Switchable interface (such as LightBulb or Fan), without needing to know the specifics of those devices.
