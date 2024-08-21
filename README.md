@@ -18,7 +18,7 @@ The idea behind SRP is that a class should focus on a single task or functionali
 * **One Reason to Change:** If a class has multiple responsibilities, any change in one of those responsibilities can potentially affect the others, leading to unintended side effects.
 
 **Example:**
-```
+```java
 public class UserService {
 
     public void authenticateUser(String username, String password) {
@@ -31,7 +31,7 @@ public class UserService {
 }
 ```
 **Refactored Example:**
-```
+```java
 public class AuthenticationService {
     public void authenticateUser(String username, String password) {
         // Logic for user authentication
@@ -60,7 +60,7 @@ The Open/Closed Principle promotes writing code that is easy to extend with new 
 
 **Example:**
 
-```
+```java
 class WhatsAppNotification {
     public void sendWhatsAppNotification() {
         System.out.println("Hey, I am WhatsApp");
@@ -100,7 +100,7 @@ class EmailNotification {
 
 **Refactored Example:**
 
-```
+```java
 package practice_open_close_principle;
 
 interface Service {
@@ -159,7 +159,7 @@ The Liskov Substitution Principle ensures that a subclass can stand in for its p
 
 **Example:**
 
-```
+```java
 class SocialMediaTasks {
     public void sendMessage() { }
     public void callInGroup() { }
@@ -189,7 +189,7 @@ class Facebook extends SocialMediaTasks {
 }
 ```
 **Refactored Example:**
-```
+```java
 interface SocialMediaTasks {
     public void sendMessage();
     public void sendPictureAndVideo();
@@ -240,7 +240,7 @@ The Interface Segregation Principle ensures that a class only implements the met
 
 **Example:**
 
-```
+```java
 interface Worker {
     void work();
     void eat();
@@ -268,7 +268,7 @@ class Robot implements Worker {
 }
 ```
 **Refactored Example:**
-```
+```java
 interface Workable {
     void work();
 }
@@ -310,7 +310,7 @@ The Dependency Inversion Principle encourages decoupling by ensuring that both h
 
 **Example:**
 
-```
+```java
 class LightBulb {
     public void turnOn() {
         System.out.println("LightBulb turned on");
@@ -338,7 +338,7 @@ class Switch {
 }
 ```
 **Refactored Example:**
-```
+```java
 interface Switchable {
     void turnOn();
     void turnOff();
