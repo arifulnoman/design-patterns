@@ -385,3 +385,86 @@ class Switch {
 * **Initial Example:** In this example, the `Switch` class directly depends on the `LightBulb` class. This means that if you need to change or replace the `LightBulb` with a different type of bulb or device, you would have to modify the `Switch` class. This tight coupling violates the Dependency Inversion Principle because the high-level module (`Switch`) depends directly on a low-level module (`LightBulb`).
 
 * **Refactored Example:** The refactored code adheres to the Dependency Inversion Principle by introducing the Switchable interface, which acts as an abstraction for the devices that can be controlled. The `Switch` class now depends on the `Switchable` abstraction rather than a concrete implementation like `LightBulb`. This way, `Switch` can operate any device that implements the `Switchable` interface (such as `LightBulb` or `Fan`), without needing to know the specifics of those devices.
+
+# Design Patters
+
+## Singleton Pattern (Creational Pattern)
+
+**Definition:** The Singleton Pattern ensures that a class has only one instance and provides a global point of access to that instance. This pattern is often used for managing shared resources like database connections, configuration settings or logging. The Singleton pattern solves two problems at the same time, violating the Single Responsibility Principle
+
+**Key Characteristics**
+* **Private Constructor:** Prevents the creation of multiple instances.
+* **Static Method:** Provides a global point of access to the instance.
+* **Lazy Initialization (optional):** The instance is created only when it's needed.
+
+**Example**
+
+```java
+class Cycle {
+	private int frontTire;
+	private int rearTire;
+	private static Cycle cycle;
+	private Cycle() {
+		
+	}
+	public static Cycle getInstance() {
+		if(cycle == null) {
+			cycle = new Cycle();
+		}
+		return cycle;
+	}
+	public void showMessage() {
+		System.out.println("I am here");
+		System.out.println(this.frontTire);
+		System.out.println(this.rearTire);
+	}
+	public void setFrontTire(int frontTire) {
+		this.frontTire = frontTire;
+	}
+	public void setRareTire(int rareTire) {
+		this.rearTire = rareTire;
+	}
+}
+
+public class Singleton {
+	
+	public static void main(String[] args) {
+		Cycle c1 = Cycle.getInstance();
+		c1.setFrontTire(20);
+		c1.setRareTire(50);
+		c1.showMessage();
+		Cycle c2 = Cycle.getInstance();
+		c2.setFrontTire(70);
+		c2.setRareTire(100);
+		c2.showMessage();
+		c1.showMessage();
+	}
+}
+```
+**Output:**
+```
+I am here
+20
+50
+I am here
+70
+100
+I am here
+70
+100
+```
+
+**Explanation:**
+
+The Singleton Pattern in your `Cycle` class ensures that only one instance of the class is created throughout the application. This is achieved through a private constructor, which prevents direct instantiation of the class. Instead, the class provides a static method, `getInstance()`, which checks if the single instance (`cycle`) already exists. If not, it creates a new instance; otherwise, it returns the existing instance. This ensures that there is only one `Cycle` object shared across the application. 
+
+In the `main` method, both `c1` and `c2` refer to this single `Cycle` instance. Modifications to the instance via `c1` are visible when accessing the instance through `c2`, demonstrating that the Singleton Pattern effectively maintains a single shared instance. The output reflects these changes consistently, confirming that the Singleton Pattern is correctly implemented.
+
+**Pros and Cons:**
+| Pros                                      | Cons                                         |
+| ----------------------------------------- | -------------------------------------------- |
+| Ensures only one instance is created      | Global state can make debugging harder       |
+| Easy access to the instance globally      | Hard to test because of single instance      |
+| Saves memory by limiting instances        | Can cause issues in multi-threaded programs  |
+| Useful for shared resources (e.g., logging)| Makes code less flexible and harder to change|
+| Can delay creation until needed           | Can become a performance bottleneck          |
