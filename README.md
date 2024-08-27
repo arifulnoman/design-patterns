@@ -406,10 +406,10 @@ Here are the types of design patterns:
 
 - [Creational Design Patterns](https://github.com/arifulnoman/design-patterns/blob/main/README.md#creational-design-patterns)
 - [Behavioral Design Patterns](https://github.com/arifulnoman/design-patterns/blob/main/README.md#behavioral-design-patterns)
-- [Structural Design Patterns](https://github.com/arifulnoman/design-patterns?tab=readme-ov-file#structural-design-patterns)
-
+- [Structural Design Patterns](https://github.com/arifulnoman/design-patterns/blob/main/README.md#structural-design-patterns)
 
 ## Creational Design Patterns
+
 **Concept:**
 Creational design patterns deal with object creation mechanisms, trying to create objects in a manner suitable to the situation. They abstract the instantiation process and provide more flexibility in deciding which objects need to be created for a given scenario. These patterns focus on handling the complexities of creating objects in a clean and efficient manner, such as controlling the object lifecycle, avoiding resource overhead, or ensuring the reuse of instances.
 
@@ -418,11 +418,11 @@ They abstract how objects are created, ensuring that the system is independent o
 
 **Common Creational Patterns:**
 
-* Factory Method
-* Abstract Factory
-* Singleton
-* Builder
-* Prototype
+- Factory Method
+- Abstract Factory
+- Singleton
+- Builder
+- Prototype
 
 ### Singleton Pattern (Creational Pattern)
 
@@ -437,13 +437,13 @@ They abstract how objects are created, ensuring that the system is independent o
 
 ```java
 class DatabaseConnectionManager {
-	
+
 	private static DatabaseConnectionManager instance = new DatabaseConnectionManager();
 
 	private DatabaseConnectionManager() {
 		System.out.println("Database connection established.");
 	}
-	
+
 	public static DatabaseConnectionManager getInstance() {
 		return instance;
 	}
@@ -453,9 +453,9 @@ class DatabaseConnectionManager {
 	}
 }
 public class Singleton {
-	
+
 	public static void main(String[] args) {
-		
+
         DatabaseConnectionManager dbManager1 = DatabaseConnectionManager.getInstance();
         dbManager1.executeQuery("SELECT * FROM users");
 
@@ -481,7 +481,6 @@ true
 The Singleton Pattern in our code `DatabaseConnectionManager` class ensures that only one instance of the class is created and used throughout the application. This is achieved through the following mechanisms:
 
 1. **Private Constructor**: The constructor is private, preventing direct instantiation of the class from outside. This ensures that new instances cannot be created using the `new` keyword.
-   
 2. **Static Instance**: A private static instance of the class (`instance`) is eagerly initialized when the class is loaded. This means the instance is created at the time of class loading, ensuring that only one instance exists throughout the application.
 
 3. **Global Access Method**: The class provides a public static method, `getInstance()`, which returns the single instance. Since the instance is created during class loading, this method simply returns the already-created instance.
@@ -503,7 +502,7 @@ Finally, the comparison `System.out.println(dbManager1 == dbManager2)` returns `
 
 **Issue**: If the `DatabaseConnectionManager` instance is a heavy resource user or is not always needed, the current implementation has a drawback. The instance is eagerly initialized when the class is loaded, which can waste resources. Instead, we should use lazy initialization to create the instance only when it is actually needed.
 
- **Solution**: Implement lazy initialization to delay the creation of the Singleton instance until `getInstance()` is called for the first time. This optimizes resource usage and ensures that the instance is only created when necessary.
+**Solution**: Implement lazy initialization to delay the creation of the Singleton instance until `getInstance()` is called for the first time. This optimizes resource usage and ensures that the instance is only created when necessary.
 
 **Improved Code with Lazy Initialization:**
 
@@ -565,10 +564,11 @@ public enum DatabaseConnectionManager {
 
 **Explanation:**
 
-* **Thread Safety:** The JVM (Java Virtual Machine) guarantees that the enum instance is created in a thread-safe manner, eliminating the need for explicit synchronization.
-* **Serialization:** Enum instances are automatically serialized correctly, ensuring that only one instance exists even after deserialization.
+- **Thread Safety:** The JVM (Java Virtual Machine) guarantees that the enum instance is created in a thread-safe manner, eliminating the need for explicit synchronization.
+- **Serialization:** Enum instances are automatically serialized correctly, ensuring that only one instance exists even after deserialization.
 
 ## Behavioral Design Patterns
+
 **Concept:**
 Behavioral design patterns are concerned with communication between objects and how responsibilities are assigned to classes and objects. These patterns focus on the interaction between objects, making it easier for objects to communicate in a way that increases flexibility in carrying out complex tasks. They help define how objects cooperate to perform tasks and assign clear responsibilities among them.
 
@@ -576,13 +576,14 @@ Behavioral design patterns are concerned with communication between objects and 
 They focus on object interaction and responsibility. These patterns help to design efficient algorithms that ensure objects interact in ways that fulfill the system's needs.
 
 **Common Behavioral Patterns:**
-* Observer
-* Strategy
-* Command
-* Chain of Responsibility
-* Mediator
-* State
-* Template Method
+
+- Observer
+- Strategy
+- Command
+- Chain of Responsibility
+- Mediator
+- State
+- Template Method
 
 ### Chain of Responsibility (Behavioral Pattern)
 
@@ -590,9 +591,9 @@ They focus on object interaction and responsibility. These patterns help to desi
 
 **Key Characteristics**
 
-* **Handler Interface:** Defines an interface for handling requests and a reference to the next handler in the chain.
-* **Concrete Handlers:** Implement the handler interface and either handle the request or pass it to the next handler.
-* **Client:** Initiates the request and passes it into the chain.
+- **Handler Interface:** Defines an interface for handling requests and a reference to the next handler in the chain.
+- **Concrete Handlers:** Implement the handler interface and either handle the request or pass it to the next handler.
+- **Client:** Initiates the request and passes it into the chain.
 
 **Example**
 
@@ -627,7 +628,7 @@ class OrderCancellationHandler extends RequestHandler {
 
         if (requestType.equalsIgnoreCase("OrderCancellation")) {
             System.out.println("Handling Order Cancellation");
-        } 
+        }
         else if (next != null) {
             next.handleRequest(requestType);
         }
@@ -640,7 +641,7 @@ class RefundHandler extends RequestHandler {
 
         if (requestType.equalsIgnoreCase("Refund")) {
             System.out.println("Handling Refund");
-        } 
+        }
         else if (next != null) {
             next.handleRequest(requestType);
         }
@@ -662,6 +663,7 @@ public class Main {
     }
 }
 ```
+
 **Output:**
 
 ```
@@ -675,7 +677,6 @@ Handling Refund
 In this code, the Chain of Responsibility pattern is implemented using a chain of request handlers:
 
 1. **Abstract Handler (`RequestHandler`)**: This abstract class defines a method for handling requests and maintains a reference to the next handler in the chain.
-   
 2. **Concrete Handlers**: Classes such as `OrderPlacementHandler`, `OrderCancellationHandler`, and `RefundHandler` extend the `RequestHandler` class and implement the `handleRequest()` method. Each handler either processes the request or passes it to the next handler in the chain.
 
 3. **Client Code**: The client creates the chain of handlers by linking them together and then sends various requests to the first handler in the chain.
@@ -751,6 +752,7 @@ class RefundHandler extends RequestHandler {
 ```
 
 ## Structural Design Patterns
+
 **Concept:**
 Structural design patterns focus on how classes and objects are composed to form larger structures. These patterns simplify the design by identifying a simple way to realize relationships between entities. They help ensure that if one part of the system changes, the entire structure does not need to be modified. Structural patterns help to define relationships between classes and objects in a way that the entire structure is easier to manage and understand.
 
@@ -759,10 +761,10 @@ They deal with object composition and typically help to ensure that classes and 
 
 **Common Structural Patterns:**
 
-* Adapter
-* Bridge
-* Composite
-* Decorator
-* Facade
-* Flyweight
-* Proxy
+- Adapter
+- Bridge
+- Composite
+- Decorator
+- Facade
+- Flyweight
+- Proxy
