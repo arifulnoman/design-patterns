@@ -6,7 +6,7 @@ Here SOLID stand for
 - [O - Open Closed Principle](https://github.com/arifulnoman/design-patterns/tree/main?tab=readme-ov-file#o---openclosed-principle)
 - [L - Liskov Substitution Principle](https://github.com/arifulnoman/design-patterns/tree/main?tab=readme-ov-file#l---liskov-substitution-principle)
 - [I - Interface Segregation Principle](https://github.com/arifulnoman/design-patterns/tree/main?tab=readme-ov-file#i---interface-segregation-principle)
-- [D - Dependency Inversion Principle](https://github.com/arifulnoman/design-patterns/blob/main/README.md#d---dependency-inversion-principle)
+- [D - Dependency Inversion Principle](https://github.com/arifulnoman/design-patterns/tree/main?tab=readme-ov-file#d---dependency-inversion-principle)
 
 ## S - Single Responsibility Principle
 
