@@ -406,7 +406,7 @@ Here are the types of design patterns:
 
 - [Creational Design Patterns](https://github.com/arifulnoman/design-patterns/blob/main/README.md#creational-design-patterns)
 - [Behavioral Design Patterns](https://github.com/arifulnoman/design-patterns/blob/main/README.md#behavioral-design-patterns)
-- [Structural Design Patterns](https://github.com/arifulnoman/design-patterns#structural-design-patterns)
+- [Structural Design Patterns](https://github.com/arifulnoman/design-patterns?tab=readme-ov-file#structural-design-patterns)
 
 
 ## Creational Design Patterns
