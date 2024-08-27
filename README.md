@@ -322,29 +322,41 @@ The Dependency Inversion Principle encourages decoupling by ensuring that both h
 **Example:**
 
 ```java
-class LightBulb {
-    public void turnOn() {
-        System.out.println("LightBulb turned on");
-    }
-
-    public void turnOff() {
-        System.out.println("LightBulb turned off");
+class PDFReport {
+    public void generatePDFReport(String content) {
+        System.out.println("Generating PDF report with content: " + content);
     }
 }
 
-class Switch {
-    private LightBulb bulb;
+class ExcelReport {
+    public void generateExcelReport(String content) {
+        System.out.println("Generating Excel report with content: " + content);
+    }
+}
 
-    public Switch(LightBulb bulb) {
-        this.bulb = bulb;
+class ReportGenerator {
+    private PDFReport pdfReport;
+    private ExcelReport excelReport;
+
+    public ReportGenerator() {
+        this.pdfReport = new PDFReport();
+        this.excelReport = new ExcelReport();
     }
 
-    public void operate(boolean on) {
-        if (on) {
-            bulb.turnOn();
-        } else {
-            bulb.turnOff();
+    public void generateReport(String format, String content) {
+        if (format.equals("PDF")) {
+            pdfReport.generatePDFReport(content); 
+        } else if (format.equals("Excel")) {
+            excelReport.generateExcelReport(content);
         }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        ReportGenerator reportGenerator = new ReportGenerator();
+        reportGenerator.generateReport("PDF", "Annual Report 2024");
+        reportGenerator.generateReport("Excel", "Monthly Report August");
     }
 }
 ```
@@ -352,53 +364,52 @@ class Switch {
 **Refactored Example:**
 
 ```java
-interface Switchable {
-    void turnOn();
-    void turnOff();
+interface ReportFormat {
+    void generateReport(String content);
 }
 
-class LightBulb implements Switchable {
-    public void turnOn() {
-        System.out.println("LightBulb turned on");
-    }
-
-    public void turnOff() {
-        System.out.println("LightBulb turned off");
+class PDFReport implements ReportFormat {
+    @Override
+    public void generateReport(String content) {
+        System.out.println("Generating PDF report with content: " + content);
     }
 }
 
-class Fan implements Switchable {
-    public void turnOn() {
-        System.out.println("Fan turned on");
-    }
-
-    public void turnOff() {
-        System.out.println("Fan turned off");
+class ExcelReport implements ReportFormat {
+    @Override
+    public void generateReport(String content) {
+        System.out.println("Generating Excel report with content: " + content);
     }
 }
 
-class Switch {
-    private Switchable device;
+class ReportGenerator {
+    private ReportFormat reportFormat;
 
-    public Switch(Switchable device) {
-        this.device = device;
+    public ReportGenerator(ReportFormat reportFormat) {
+        this.reportFormat = reportFormat;
     }
 
-    public void operate(boolean on) {
-        if (on) {
-            device.turnOn();
-        } else {
-            device.turnOff();
-        }
+    public void generateReport(String content) {
+        reportFormat.generateReport(content);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        ReportFormat pdfReport = new PDFReport();
+        ReportGenerator pdfGenerator = new ReportGenerator(pdfReport);
+        pdfGenerator.generateReport("Annual Report 2024");
+        ReportFormat excelReport = new ExcelReport();
+        ReportGenerator excelGenerator = new ReportGenerator(excelReport);
+        excelGenerator.generateReport("Monthly Report August");
     }
 }
 ```
-
 **Explanation:**
 
-- **Initial Example:** In this example, the `Switch` class directly depends on the `LightBulb` class. This means that if you need to change or replace the `LightBulb` with a different type of bulb or device, you would have to modify the `Switch` class. This tight coupling violates the Dependency Inversion Principle because the high-level module (`Switch`) depends directly on a low-level module (`LightBulb`).
+- **Initial Example:** The `ReportGenerator` class depends directly on `PDFReport` and `ExcelReport`. This design forces changes in `ReportGenerator` for new report formats, violating the Dependency Inversion Principle.
 
-- **Refactored Example:** The refactored code adheres to the Dependency Inversion Principle by introducing the Switchable interface, which acts as an abstraction for the devices that can be controlled. The `Switch` class now depends on the `Switchable` abstraction rather than a concrete implementation like `LightBulb`. This way, `Switch` can operate any device that implements the `Switchable` interface (such as `LightBulb` or `Fan`), without needing to know the specifics of those devices.
+- **Refactored Example:** By introducing the `ReportFormat` interface, the `ReportGenerator` class depends on an abstraction rather than concrete implementations. This allows `ReportGenerator` to handle any report format (like `PDFReport` or `ExcelReport`) without needing modifications. The system is now more flexible and adheres to the Dependency Inversion Principle.
 
 # Design Patterns
 
@@ -488,6 +499,31 @@ The Singleton Pattern in our code `DatabaseConnectionManager` class ensures that
 In the `main` method, both `dbManager1` and `dbManager2` refer to the same instance of `DatabaseConnectionManager`. When you call the `executeQuery()` method on either instance, it operates on the same object, demonstrating that the Singleton pattern effectively maintains a single shared instance across the application.
 
 Finally, the comparison `System.out.println(dbManager1 == dbManager2)` returns `true`, confirming that both `dbManager1` and `dbManager2` refer to the same instance, which validates the Singleton pattern's correct implementation.
+
+#### Use Cases of Singleton Pattern
+
+The Singleton pattern ensures a class has only one instance and provides a global access point to it. It is useful when you need to share a single object across the entire application.
+
+#### **Common Use Cases**
+
+1. **Logging:** Ensure only one logging instance is used throughout the application to avoid multiple log files.
+2. **Configuration Settings:** Load and use one instance of configuration data across the system.
+3. **Database Connections:** Share a single database connection to optimize resource usage.
+4. **Caching:** Use one cache instance to store and access frequently used data.
+5. **Resource Manager:** Track and allocate limited resources (like file handles or sockets) using a single manager instance.
+6. **Service Locator:** Retrieve services or dependencies from a single point of access.
+7. **Global State:** Manage global data (like user preferences or app settings) in one place.
+8. **Window Manager:** Control window placement and appearance in a graphical interface using a single instance.
+
+#### **When to Avoid Singleton**
+
+- **Testing:** Singletons can make testing harder due to shared global state.
+- **Tight Coupling:** Overuse can lead to tightly connected code, reducing flexibility.
+- **Concurrency:** Poor implementation can cause issues in multi-threaded environments.
+
+#### **Conclusion**
+The Singleton pattern is effective when you need one instance of a class across your application. Use it wisely to avoid potential downsides in testing, coupling, and multi-threading.
+
 
 **Pros and Cons:**
 | Pros | Cons |
@@ -682,6 +718,31 @@ In this code, the Chain of Responsibility pattern is implemented using a chain o
 3. **Client Code**: The client creates the chain of handlers by linking them together and then sends various requests to the first handler in the chain.
 
 This pattern allows the system to be extended by adding new handlers without modifying existing code. For example, new request types can be added by creating new handler classes and linking them into the chain.
+
+#### Use Cases of Chain of Responsibility Pattern
+
+The Chain of Responsibility pattern allows multiple objects to handle a request sequentially. If one handler cannot process the request, it passes the request to the next handler in the chain. This is useful for decoupling the sender of a request from its receivers.
+
+#### **Common Use Cases**
+
+1. **Event Handling (GUIs):** Pass events like clicks or key presses through UI components until one handles it.
+2. **Middleware Processing:** Web requests pass through layers like logging, authentication and authorization, each handling its part.
+3. **Exception Handling:** Exceptions move through handlers until one resolves the issue.
+4. **Support Systems:** Customer issues escalate through support levels (e.g., Level 1 to Level 3) until resolved.
+5. **Logging:** Log messages go through a chain of loggers, each handling specific log levels (INFO, ERROR).
+6. **Approval Workflow:** Requests are passed through multiple approval levels, such as manager, director, and CFO.
+7. **File Handling:** Different file formats are passed to handlers, with each handler processing the appropriate format.
+8. **Command Processing:** Commands are passed through processors, each handling specific types of commands (e.g., weather, news).
+
+#### **When to Avoid Chain of Responsibility**
+
+- **Complexity:** If the chain becomes too long, it can lead to performance issues and difficult debugging.
+- **Order Sensitivity:** If the order of handlers matters, the chain can become fragile and hard to maintain.
+- **Undefined Handling:** If no handler processes the request, you need a fallback mechanism to avoid unhandled cases.
+
+#### **Conclusion**
+The Chain of Responsibility pattern is helpful for organizing multiple handlers for a task. Use it when you want flexibility in passing requests through a series of processors without tightly coupling them.
+
 
 **Pros and Cons:**
 | Pros | Cons |
