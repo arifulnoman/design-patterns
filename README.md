@@ -6,7 +6,7 @@ Here SOLID stand for
 - [O - Open Closed Principle](https://github.com/arifulnoman/design-patterns/tree/main?tab=readme-ov-file#o---openclosed-principle)
 - [L - Liskov Substitution Principle](https://github.com/arifulnoman/design-patterns/tree/main?tab=readme-ov-file#l---liskov-substitution-principle)
 - [I - Interface Segregation Principle](https://github.com/arifulnoman/design-patterns/tree/main?tab=readme-ov-file#i---interface-segregation-principle)
-- D - Dependency Inversion Principle
+- [D - Dependency Inversion Principle](https://github.com/arifulnoman/design-patterns/blob/main/README.md#d---dependency-inversion-principle)
 
 ## S - Single Responsibility Principle
 
@@ -401,6 +401,13 @@ class Switch {
 - **Refactored Example:** The refactored code adheres to the Dependency Inversion Principle by introducing the Switchable interface, which acts as an abstraction for the devices that can be controlled. The `Switch` class now depends on the `Switchable` abstraction rather than a concrete implementation like `LightBulb`. This way, `Switch` can operate any device that implements the `Switchable` interface (such as `LightBulb` or `Fan`), without needing to know the specifics of those devices.
 
 # Design Patterns
+
+Here are the types of design patterns:
+
+- [Creational Design Patterns](https://github.com/arifulnoman/design-patterns/blob/main/README.md#creational-design-patterns)
+- [Behavioral Design Patterns](https://github.com/arifulnoman/design-patterns/blob/main/README.md#behavioral-design-patterns)
+- [Structural Design Patterns](https://github.com/arifulnoman/design-patterns#structural-design-patterns)
+
 
 ## Creational Design Patterns
 **Concept:**
