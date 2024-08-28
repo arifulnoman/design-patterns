@@ -575,35 +575,6 @@ public static DatabaseConnectionManager getInstance() {
 }
 ```
 
-**Issue:** The double-checked locking pattern, while intended to provide a thread-safe Singleton implementation with minimal synchronization overhead, can be complex and error-prone. If not implemented correctly, it can lead to subtle concurrency issues and make the code harder to maintain.
-
-**Solution:** Use the enum type to implement the Singleton pattern. Enums inherently provide thread safety, handle serialization correctly, and prevent reflection attacks. They simplify the implementation by leveraging the JVM’s guarantees for enum instance creation.
-
-**Improved Code with Enum Singleton:**
-
-```java
-public enum DatabaseConnectionManager {
-    INSTANCE;
-
-    private DatabaseConnectionManager() {
-        System.out.println("Database connection established.");
-    }
-
-    public static DatabaseConnectionManager getInstance() {
-        return INSTANCE;
-    }
-
-    public void executeQuery(String query) {
-        System.out.println("Executing query: " + query);
-    }
-}
-```
-
-**Explanation:**
-
-- **Thread Safety:** The JVM (Java Virtual Machine) guarantees that the enum instance is created in a thread-safe manner, eliminating the need for explicit synchronization.
-- **Serialization:** Enum instances are automatically serialized correctly, ensuring that only one instance exists even after deserialization.
-
 ### **Is Singleton an Anti-Pattern?**
 
 The Singleton pattern is often regarded as an anti-pattern due to several potential issues, despite its initial appeal. But there is no solid statement about it. Below is a breakdown of the reasons why Singleton is seen as an anti-pattern and how it violates the SOLID principles:
