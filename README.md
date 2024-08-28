@@ -603,6 +603,35 @@ public enum DatabaseConnectionManager {
 - **Thread Safety:** The JVM (Java Virtual Machine) guarantees that the enum instance is created in a thread-safe manner, eliminating the need for explicit synchronization.
 - **Serialization:** Enum instances are automatically serialized correctly, ensuring that only one instance exists even after deserialization.
 
+### **Is Singleton an Anti-Pattern?**
+
+The Singleton pattern is often regarded as an anti-pattern due to several potential issues, despite its initial appeal. But there is no solid statement about it. Below is a breakdown of the reasons why Singleton is seen as an anti-pattern and how it violates the SOLID principles:
+
+#### **1. Violates SOLID Principles**
+   - **Single Responsibility Principle (SRP):**
+     - **Violation:** Singleton classes are responsible for two things: ensuring only one instance exists and handling business logic. This combines lifecycle management with business logic, violating the principle of having only one responsibility.
+
+   - **Open/Closed Principle (OCP):**
+     - **Violation:** Singleton classes are difficult to extend or modify without altering their code. This violates the principle that classes should be open for extension but closed for modification.
+
+   - **Dependency Inversion Principle (DIP):**
+     - **Violation:** Singletons promote tight coupling because classes that depend on them call the Singleton’s `getInstance()` method directly. This leads to dependency on a concrete class instead of an abstraction, making the code harder to test and extend.
+
+#### **2. Makes Unit Testing Difficult**
+   - **Global State:** Singleton classes introduce global state, which can lead to hidden dependencies. Global state can make unit tests unreliable, as different tests may inadvertently share the same instance, leading to unexpected behavior.
+
+#### **3. Tightly Coupled Code**
+   - **Direct Dependency:** Classes that rely on Singletons often directly call `getInstance()`, leading to tightly coupled code. This reduces flexibility and makes the code less maintainable.
+
+#### **4. Concurrency Issues**
+   - **Thread-Safety:** Implementing a Singleton in a multi-threaded environment can be tricky. If not handled properly, it can lead to race conditions and inconsistent state. Ensuring thread safety adds complexity to the implementation.
+
+#### **5. Performance Bottlenecks**
+   - **Single Access Point:** Since the Singleton pattern ensures a single instance, all clients share this instance. If multiple clients access the Singleton simultaneously, it can become a performance bottleneck, especially if it’s not implemented with concurrency in mind.
+
+#### **6. Breaks Object-Oriented Principles**
+   - **Encapsulation Issues:** The Singleton pattern can break encapsulation by allowing global access to the instance. This goes against the principle of hiding implementation details, leading to a design that is less modular and harder to maintain.
+
 ## Behavioral Design Patterns
 
 **Concept:**
