@@ -345,7 +345,7 @@ class ReportGenerator {
 
     public void generateReport(String format, String content) {
         if (format.equals("PDF")) {
-            pdfReport.generatePDFReport(content); 
+            pdfReport.generatePDFReport(content);
         } else if (format.equals("Excel")) {
             excelReport.generateExcelReport(content);
         }
@@ -405,6 +405,7 @@ public class Main {
     }
 }
 ```
+
 **Explanation:**
 
 - **Initial Example:** The `ReportGenerator` class depends directly on `PDFReport` and `ExcelReport`. This design forces changes in `ReportGenerator` for new report formats, violating the Dependency Inversion Principle.
@@ -522,8 +523,8 @@ The Singleton pattern ensures a class has only one instance and provides a globa
 - **Concurrency:** Poor implementation can cause issues in multi-threaded environments.
 
 #### **Conclusion**
-The Singleton pattern is effective when you need one instance of a class across your application. Use it wisely to avoid potential downsides in testing, coupling, and multi-threading.
 
+The Singleton pattern is effective when you need one instance of a class across your application. Use it wisely to avoid potential downsides in testing, coupling, and multi-threading.
 
 **Pros and Cons:**
 | Pros | Cons |
@@ -608,29 +609,37 @@ public enum DatabaseConnectionManager {
 The Singleton pattern is often regarded as an anti-pattern due to several potential issues, despite its initial appeal. But there is no solid statement about it. Below is a breakdown of the reasons why Singleton is seen as an anti-pattern and how it violates the SOLID principles:
 
 #### **1. Violates SOLID Principles**
-   - **Single Responsibility Principle (SRP):**
-     - **Violation:** Singleton classes are responsible for two things: ensuring only one instance exists and handling business logic. This combines lifecycle management with business logic, violating the principle of having only one responsibility.
 
-   - **Open/Closed Principle (OCP):**
-     - **Violation:** Singleton classes are difficult to extend or modify without altering their code. This violates the principle that classes should be open for extension but closed for modification.
+- **Single Responsibility Principle (SRP):**
 
-   - **Dependency Inversion Principle (DIP):**
-     - **Violation:** Singletons promote tight coupling because classes that depend on them call the Singleton’s `getInstance()` method directly. This leads to dependency on a concrete class instead of an abstraction, making the code harder to test and extend.
+  - **Violation:** Singleton classes are responsible for two things: ensuring only one instance exists and handling business logic. This combines lifecycle management with business logic, violating the principle of having only one responsibility.
+
+- **Open/Closed Principle (OCP):**
+
+  - **Violation:** Singleton classes are difficult to extend or modify without altering their code. This violates the principle that classes should be open for extension but closed for modification.
+
+- **Dependency Inversion Principle (DIP):**
+  - **Violation:** Singletons promote tight coupling because classes that depend on them call the Singleton’s `getInstance()` method directly. This leads to dependency on a concrete class instead of an abstraction, making the code harder to test and extend.
 
 #### **2. Makes Unit Testing Difficult**
-   - **Global State:** Singleton classes introduce global state, which can lead to hidden dependencies. Global state can make unit tests unreliable, as different tests may inadvertently share the same instance, leading to unexpected behavior.
+
+- **Global State:** Singleton classes introduce global state, which can lead to hidden dependencies. Global state can make unit tests unreliable, as different tests may inadvertently share the same instance, leading to unexpected behavior.
 
 #### **3. Tightly Coupled Code**
-   - **Direct Dependency:** Classes that rely on Singletons often directly call `getInstance()`, leading to tightly coupled code. This reduces flexibility and makes the code less maintainable.
+
+- **Direct Dependency:** Classes that rely on Singletons often directly call `getInstance()`, leading to tightly coupled code. This reduces flexibility and makes the code less maintainable.
 
 #### **4. Concurrency Issues**
-   - **Thread-Safety:** Implementing a Singleton in a multi-threaded environment can be tricky. If not handled properly, it can lead to race conditions and inconsistent state. Ensuring thread safety adds complexity to the implementation.
+
+- **Thread-Safety:** Implementing a Singleton in a multi-threaded environment can be tricky. If not handled properly, it can lead to race conditions and inconsistent state. Ensuring thread safety adds complexity to the implementation.
 
 #### **5. Performance Bottlenecks**
-   - **Single Access Point:** Since the Singleton pattern ensures a single instance, all clients share this instance. If multiple clients access the Singleton simultaneously, it can become a performance bottleneck, especially if it’s not implemented with concurrency in mind.
+
+- **Single Access Point:** Since the Singleton pattern ensures a single instance, all clients share this instance. If multiple clients access the Singleton simultaneously, it can become a performance bottleneck, especially if it’s not implemented with concurrency in mind.
 
 #### **6. Breaks Object-Oriented Principles**
-   - **Encapsulation Issues:** The Singleton pattern can break encapsulation by allowing global access to the instance. This goes against the principle of hiding implementation details, leading to a design that is less modular and harder to maintain.
+
+- **Encapsulation Issues:** The Singleton pattern can break encapsulation by allowing global access to the instance. This goes against the principle of hiding implementation details, leading to a design that is less modular and harder to maintain.
 
 ## Behavioral Design Patterns
 
@@ -654,11 +663,23 @@ They focus on object interaction and responsibility. These patterns help to desi
 
 **Definition:** The Chain of Responsibility Pattern allows a request to be passed along a chain of handlers. Each handler can either process the request or pass it to the next handler in the chain. This pattern promotes loose coupling between sender and receiver and provides a flexible way to handle requests.
 
-**Key Characteristics**
+#### **Chain of Responsibility Pattern Benefits**
 
-- **Handler Interface:** Defines an interface for handling requests and a reference to the next handler in the chain.
-- **Concrete Handlers:** Implement the handler interface and either handle the request or pass it to the next handler.
-- **Client:** Initiates the request and passes it into the chain.
+- **Loose Coupling:** The pattern promotes loose coupling between the sender and receiver of a request. The sender doesn’t need to know which object will handle the request, and the receiver doesn’t need to know the structure of the chain.
+
+- **Dynamic Chain:** The chain can be modified dynamically at runtime. This allows for flexibility in adding or removing handlers without affecting the client code.
+
+- **Single Responsibility Principle:** Each handler in the chain has a single responsibility: either handling the request or passing it to the next handler. This helps in maintaining a clean and modular design.
+
+- **Sequential Order:** Requests are processed sequentially along the chain, ensuring that each request is handled in a predefined order.
+
+- **Fallback Mechanism:** The chain can include a mechanism to handle requests that are not handled by any handler in the chain, providing a fallback or default behavior.
+
+- **Variants:** The pattern has variants like a linear chain, where each handler has a single successor, or a tree-like structure, where a handler can have multiple successors. This allows for more complex processing logic.
+
+- **Enhanced Flexibility:** The pattern allows for enhanced flexibility in handling requests. The chain can be configured or modified to suit different requirements without changing the client code.
+
+![Big Picture](https://media.geeksforgeeks.org/wp-content/uploads/20240214131443/chainofresponsibiltydesignpatternclassdiagram-.webp)
 
 **Example**
 
@@ -770,8 +791,8 @@ The Chain of Responsibility pattern allows multiple objects to handle a request 
 - **Undefined Handling:** If no handler processes the request, you need a fallback mechanism to avoid unhandled cases.
 
 #### **Conclusion**
-The Chain of Responsibility pattern is helpful for organizing multiple handlers for a task. Use it when you want flexibility in passing requests through a series of processors without tightly coupling them.
 
+The Chain of Responsibility pattern is helpful for organizing multiple handlers for a task. Use it when you want flexibility in passing requests through a series of processors without tightly coupling them.
 
 **Pros and Cons:**
 | Pros | Cons |
@@ -781,65 +802,6 @@ The Chain of Responsibility pattern is helpful for organizing multiple handlers 
 | Flexibility in order of processing requests | There might be no handler to process a request |
 | Handlers can focus on specific tasks | Increased complexity with long chains |
 | Supports dynamic composition of objects | Can be hard to debug and maintain |
-
-**Improvement:**
-
-**Issue:** The current implementation is not optimal for situations where only one handler is expected to process a request, but the request is passed down the chain even after being handled.
-
-**Solution:** Introduce a mechanism where once a request is handled, it stops propagating down the chain. This can be done by adding a return type to the `handleRequest()` method that indicates whether the request has been processed.
-
-**Improved Code:**
-
-```java
-abstract class RequestHandler {
-    protected RequestHandler next;
-
-    public void setNext(RequestHandler next) {
-        this.next = next;
-    }
-
-    public abstract boolean handleRequest(String requestType);
-}
-
-class OrderPlacementHandler extends RequestHandler {
-    @Override
-    public boolean handleRequest(String requestType) {
-        if (requestType.equalsIgnoreCase("OrderPlacement")) {
-            System.out.println("Handling Order Placement");
-            return true;  // Request handled, stop chain
-        } else if (next != null) {
-            return next.handleRequest(requestType);
-        }
-        return false;  // Request not handled
-    }
-}
-
-class OrderCancellationHandler extends RequestHandler {
-    @Override
-    public boolean handleRequest(String requestType) {
-        if (requestType.equalsIgnoreCase("OrderCancellation")) {
-            System.out.println("Handling Order Cancellation");
-            return true;
-        } else if (next != null) {
-            return next.handleRequest(requestType);
-        }
-        return false;
-    }
-}
-
-class RefundHandler extends RequestHandler {
-    @Override
-    public boolean handleRequest(String requestType) {
-        if (requestType.equalsIgnoreCase("Refund")) {
-            System.out.println("Handling Refund");
-            return true;
-        } else if (next != null) {
-            return next.handleRequest(requestType);
-        }
-        return false;
-    }
-}
-```
 
 ## Structural Design Patterns
 
@@ -858,3 +820,111 @@ They deal with object composition and typically help to ensure that classes and 
 - Facade
 - Flyweight
 - Proxy
+
+### Adapter Pattern (Structural Pattern)
+
+**Definition:** The Adapter Pattern allows objects with incompatible interfaces to collaborate by wrapping one interface to make it compatible with another. This pattern is useful when integrating legacy systems with new code, or when you want to reuse classes that don’t have compatible interfaces.
+
+**Key Characteristics**
+
+- **Wrapper:** The Adapter acts as a wrapper between two incompatible interfaces.
+- **Interface Translation:** It converts the interface of a class into another interface that the client expects.
+- **Reuse:** Allows the reuse of existing code, without altering it, in a system that requires a different interface.
+
+**Example**
+
+```java
+interface Mp4Player {
+    void playMp4(String fileName);
+}
+
+interface AudioPlayer {
+    void playAudio(String fileName);
+}
+
+class MediaPlayer implements AudioPlayer {
+    @Override
+    public void playAudio(String fileName) {
+        System.out.println("Playing audio file: " + fileName + " using built-in audio player");
+    }
+}
+
+class VlcPlayer implements Mp4Player {
+    @Override
+    public void playMp4(String fileName) {
+        System.out.println("Playing MP4 file: " + fileName + " using VLC");
+    }
+}
+
+class Mp4ToAudioAdapter implements AudioPlayer {
+    private Mp4Player mp4Player;
+
+    public Mp4ToAudioAdapter(Mp4Player mp4Player) {
+        this.mp4Player = mp4Player;
+    }
+
+    @Override
+    public void playAudio(String fileName) {
+        mp4Player.playMp4(fileName);
+    }
+}
+
+public class AdapterPatternDemo {
+    public static void main(String[] args) {
+        AudioPlayer audioPlayer = new MediaPlayer();
+        audioPlayer.playAudio("song.mp3");
+
+        Mp4Player vlcPlayer = new VlcPlayer();
+        AudioPlayer adaptedPlayer = new Mp4ToAudioAdapter(vlcPlayer);
+        adaptedPlayer.playAudio("video.mp4");
+    }
+}
+```
+
+**Output:**
+
+```
+Playing audio file: song.mp3 using built-in audio player
+Playing MP4 file: video.mp4 using VLC
+```
+
+### **Explanation:**
+
+- **Adaptee (Mp4Player):** This interface represents the incompatible interface that we want to adapt. In this case, it’s an `Mp4Player` that can only play MP4 files.
+- **Target Interface (AudioPlayer):** This is the interface expected by the client. The `AudioPlayer` interface can play generic audio files.
+- **Adapter (Mp4ToAudioAdapter):** The adapter class implements the `AudioPlayer` interface and internally uses an `Mp4Player` to handle the playback of MP4 files. This enables the `Mp4Player` to be used in contexts where an `AudioPlayer` is expected.
+
+- **Client (MediaPlayer):** The client code uses the `AudioPlayer` interface. When it needs to play an MP4 file, it can use the adapter (`Mp4ToAudioAdapter`).
+
+In the main method, we demonstrate the usage of both a standard audio player and the adapter to play MP4 files. The adapter allows the client to treat MP4 files as if they were regular audio files, even though they are handled by the `VlcPlayer` internally.
+
+### **Use Cases of Adapter Pattern**
+
+The Adapter Pattern is useful when you need to integrate classes with incompatible interfaces. It allows for code reuse and compatibility without modifying the existing code.
+
+#### **Common Use Cases**
+
+1. **Integrating Legacy Systems:** When you need to integrate an old system with a new one that has a different interface.
+2. **Third-Party Libraries:** When using a third-party library with an interface that doesn’t match your system’s needs.
+3. **File Format Conversions:** Adapting between different file formats or communication protocols.
+4. **GUI Components:** Integrating components from different frameworks or libraries that have different APIs.
+5. **Database Abstraction:** Adapting various database connections to work with a unified interface.
+
+#### **When to Avoid Adapter**
+
+- **Too Many Adapters:** If you find yourself creating a large number of adapters, this might be a sign that your system design needs to be refactored.
+- **Performance Overhead:** Using adapters can introduce additional layers of abstraction, potentially leading to performance issues.
+- **Complexity:** Overuse of adapters can make the system more complex and harder to understand.
+
+### **Conclusion**
+
+The Adapter Pattern provides a flexible way to reuse existing classes by adapting them to work with incompatible interfaces. It’s a key tool in building interoperable systems, especially when integrating third-party libraries or legacy code.
+
+### **Pros and Cons:**
+
+| Pros                                               | Cons                                               |
+| -------------------------------------------------- | -------------------------------------------------- |
+| Allows incompatible interfaces to work together    | Adds an extra layer of abstraction                 |
+| Promotes code reuse without altering existing code | Can increase complexity with many adapters         |
+| Facilitates integration with legacy systems        | Performance may suffer due to the additional layer |
+| Makes code more flexible and modular               | Overuse can lead to a convoluted design            |
