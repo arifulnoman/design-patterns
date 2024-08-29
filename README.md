@@ -740,6 +740,151 @@ In this code, the Chain of Responsibility pattern is implemented using a chain o
 
 This pattern allows the system to be extended by adding new handlers without modifying existing code. For example, new request types can be added by creating new handler classes and linking them into the chain.
 
+**Another Example:**
+
+#### Scenario
+
+Here we managed two buttons, each associated with three pictures. When a button is clicked, it should delegate handling to a chain of picture handlers. Each picture handler should be able to process clicks for a specific picture and print a message when clicked.
+
+Here’s the visual representation of the scenario using the Chain of Responsibility pattern, including the two buttons and three pictures for each button.
+
+#### Big Picture Diagram
+
+```
+                                 [Button1Handler]
+                                /       |       \
+                               /        |        \
+                     [Picture1Handler] [Picture2Handler] [Picture3Handler]
+                               \
+                                \
+                                 [Button2Handler]
+                                /       |       \
+                               /        |        \
+                     [Picture1Handler] [Picture2Handler] [Picture3Handler]
+```
+
+#### 1. `ClickHandler` Interface
+
+```java
+public interface ClickHandler {
+    void setNext(ClickHandler nextHandler);
+    void handle(String button, String picture);
+}
+```
+
+- **Description**: This interface defines methods for setting the next handler in the chain and handling button and picture clicks.
+
+#### 2. `ButtonHandler` Class
+
+```java
+public class ButtonHandler implements ClickHandler {
+    private String buttonName;
+    private ClickHandler pictureHandler;
+    private ClickHandler nextHandler;
+
+    public ButtonHandler(String buttonName, String[] pictures) {
+        this.buttonName = buttonName;
+        ClickHandler currentHandler = null;
+
+        // Create picture handlers and chain them
+        for (String picture : pictures) {
+            ClickHandler newHandler = new PictureHandler(picture);
+            if (currentHandler == null) {
+                this.pictureHandler = newHandler;
+            } else {
+                currentHandler.setNext(newHandler);
+            }
+            currentHandler = newHandler;
+        }
+    }
+
+    @Override
+    public void setNext(ClickHandler nextHandler) {
+        this.nextHandler = nextHandler;
+    }
+
+    @Override
+    public void handle(String button, String picture) {
+        if (buttonName.equals(button)) {
+            pictureHandler.handle(button, picture);
+        } else if (nextHandler != null) {
+            nextHandler.handle(button, picture);
+        }
+    }
+}
+```
+
+- **Description**: This class represents a button handler. It creates a chain of picture handlers for each button and delegates the handling of picture clicks. If the button does not match, it forwards the request to the next handler.
+
+#### 3. `PictureHandler` Class
+
+```java
+public class PictureHandler implements ClickHandler {
+    private String pictureName;
+    private ClickHandler nextHandler;
+
+    public PictureHandler(String pictureName) {
+        this.pictureName = pictureName;
+    }
+
+    @Override
+    public void setNext(ClickHandler nextHandler) {
+        this.nextHandler = nextHandler;
+    }
+
+    @Override
+    public void handle(String button, String picture) {
+        if (pictureName.equals(picture)) {
+            System.out.println(button + " " + picture + " pressed");
+        } else if (nextHandler != null) {
+            nextHandler.handle(button, picture);
+        }
+    }
+}
+```
+
+- **Description**: This class represents a picture handler. It handles clicks for a specific picture. If it doesn’t handle the picture, it passes the request to the next handler in the chain.
+
+#### 4. Main Class
+```java
+public class Main {
+    public static void main(String[] args) {
+
+        // Create picture handlers for Button 1
+        String[] button1Pictures = {"Pic1", "Pic2", "Pic3"};
+        ButtonHandler button1Handler = new ButtonHandler("Button1", button1Pictures);
+
+        // Create picture handlers for Button 2
+        String[] button2Pictures = {"Pic1", "Pic2", "Pic3"};
+        ButtonHandler button2Handler = new ButtonHandler("Button2", button2Pictures);
+
+        // Chain Button Handlers
+        button1Handler.setNext(button2Handler);
+
+        button1Handler.handle("Button1", "Pic1");
+        button1Handler.handle("Button2", "Pic3");
+        button1Handler.handle("Button2", "Pic4");
+    }
+}
+```
+**Expected Output**
+```
+Button1 Pic1 pressed
+Button2 Pic3 pressed
+```
+#### Explanation
+
+1. **Interface Definition (`ClickHandler`)**:
+   - Defines the methods `setNext` and `handle`. `setNext` is used to link handlers in the chain, while `handle` processes button and picture clicks.
+
+2. **ButtonHandler Implementation**:
+   - **Constructor**: Initializes the button handler with a button name and an array of pictures. It creates a chain of `PictureHandler` instances for the button.
+   - **`handle` Method**: Checks if the button matches. If it does, it delegates to the picture handlers. If not, it forwards the request to the next handler (if any).
+
+3. **PictureHandler Implementation**:
+   - **Constructor**: Initializes the picture handler with a picture name.
+   - **`handle` Method**: Checks if the picture matches. If it does, it prints a message indicating which button and picture were clicked. If not, it passes the request to the next handler (if any).
+
 #### Use Cases of Chain of Responsibility Pattern
 
 The Chain of Responsibility pattern allows multiple objects to handle a request sequentially. If one handler cannot process the request, it passes the request to the next handler in the chain. This is useful for decoupling the sender of a request from its receivers.
@@ -878,8 +1023,6 @@ The Adapter Pattern is useful when you need to integrate classes with incompatib
 1. **Integrating Legacy Systems:** When you need to integrate an old system with a new one that has a different interface.
 2. **Third-Party Libraries:** When using a third-party library with an interface that doesn’t match your system’s needs.
 3. **File Format Conversions:** Adapting between different file formats or communication protocols.
-4. **GUI Components:** Integrating components from different frameworks or libraries that have different APIs.
-5. **Database Abstraction:** Adapting various database connections to work with a unified interface.
 
 #### **When to Avoid Adapter**
 
