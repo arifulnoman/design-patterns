@@ -474,6 +474,8 @@ public class Singleton {
         DatabaseConnectionManager dbManager2 = DatabaseConnectionManager.getInstance();
         dbManager2.executeQuery("INSERT INTO users (name) VALUES ('John Doe')");
 
+        dbManager1.executeQuery("SELECT * FROM users");
+
         System.out.println(dbManager1 == dbManager2);
     }
 }
@@ -485,6 +487,7 @@ public class Singleton {
 Database connection established.
 Executing query: SELECT * FROM users
 Executing query: INSERT INTO users (name) VALUES ('John Doe')
+Executing query: SELECT * FROM users
 true
 ```
 
@@ -892,18 +895,17 @@ The Chain of Responsibility pattern allows multiple objects to handle a request 
 #### **Common Use Cases**
 
 1. **Event Handling (GUIs):** Pass events like clicks or key presses through UI components until one handles it.
-2. **Middleware Processing:** Web requests pass through layers like logging, authentication and authorization, each handling its part.
-3. **Exception Handling:** Exceptions move through handlers until one resolves the issue.
-4. **Support Systems:** Customer issues escalate through support levels (e.g., Level 1 to Level 3) until resolved.
-5. **Logging:** Log messages go through a chain of loggers, each handling specific log levels (INFO, ERROR).
-6. **Approval Workflow:** Requests are passed through multiple approval levels, such as manager, director, and CFO.
-7. **File Handling:** Different file formats are passed to handlers, with each handler processing the appropriate format.
-8. **Command Processing:** Commands are passed through processors, each handling specific types of commands (e.g., weather, news).
+2. **Exception Handling:** Exceptions move through handlers until one resolves the issue.
+3. **Support Systems:** Customer issues escalate through support levels (e.g., Level 1 to Level 3) until resolved.
+4. **Logging:** Log messages go through a chain of loggers, each handling specific log levels (INFO, ERROR).
+5. **Approval Workflow:** Requests are passed through multiple approval levels, such as manager, director, and CFO.
+6. **File Handling:** Different file formats are passed to handlers, with each handler processing the appropriate format.
+7. **Command Processing:** Commands are passed through processors, each handling specific types of commands (e.g., weather, news).
 
 #### **When to Avoid Chain of Responsibility**
 
 - **Complexity:** If the chain becomes too long, it can lead to performance issues and difficult debugging.
-- **Order Sensitivity:** If the order of handlers matters, the chain can become fragile and hard to maintain.
+
 - **Undefined Handling:** If no handler processes the request, you need a fallback mechanism to avoid unhandled cases.
 
 #### **Conclusion**
